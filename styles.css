@@ -1,0 +1,856 @@
+/* Base Styles */
+:root {
+    --primary-color: #e60000;
+    --secondary-color: #000000;
+    --accent-color: #ffc107;
+    --text-color: #333333;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --gray-color: #6c757d;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-color);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+section {
+    padding: 80px 0;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--shadow);
+}
+
+.btn-primary:hover {
+    background-color: #cc0000;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+    box-shadow: var(--shadow);
+}
+
+.btn-secondary:hover {
+    background-color: #333;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Styles */
+header {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: white;
+}
+
+nav ul {
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+nav ul li a:hover {
+    color: var(--accent-color);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #333 100%);
+    color: white;
+    padding: 100px 0;
+    position: relative;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.trust-badges span {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.trust-badges i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+/* Product Highlights Section */
+.product-highlights {
+    background-color: white;
+}
+
+.product-highlights h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.benefits-container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.benefits {
+    flex: 1;
+}
+
+.benefits h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.benefits ul li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.benefits ul li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+
+.benefits ul li:last-child i {
+    color: var(--accent-color);
+}
+
+.benefits ul li:last-child {
+    font-weight: 600;
+}
+
+.product-image {
+    flex: 1;
+    text-align: center;
+}
+
+.product-image img {
+    max-width: 80%;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+/* Video Section */
+.video-section {
+    background-color: var(--light-color);
+    text-align: center;
+}
+
+.video-section h2 {
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.video-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.video-placeholder {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 100px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.video-placeholder:hover {
+    transform: scale(1.02);
+}
+
+.video-placeholder i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.video-placeholder p {
+    font-size: 1.1rem;
+    max-width: 400px;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background-color: white;
+    text-align: center;
+}
+
+.testimonials h2 {
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-content i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.testimonial-content p {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.testimonial-author h4 {
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.testimonial-author p {
+    font-size: 0.9rem;
+    color: var(--gray-color);
+    font-style: normal;
+}
+
+/* Pricing Section */
+.pricing {
+    background-color: var(--light-color);
+    text-align: center;
+}
+
+.pricing h2 {
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.offer-box {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.offer-content {
+    padding: 40px;
+}
+
+.offer-content h3 {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.price {
+    margin-bottom: 30px;
+}
+
+.original-price {
+    font-size: 1.5rem;
+    color: var(--gray-color);
+    text-decoration: line-through;
+    margin-right: 15px;
+}
+
+.current-price {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    font-weight: 800;
+}
+
+.offer-features {
+    margin-bottom: 30px;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.offer-features li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.offer-features li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 1.2rem;
+    margin-top: 3px;
+}
+
+.payment-options {
+    margin-bottom: 30px;
+}
+
+.payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.payment-icons i {
+    font-size: 2rem;
+    color: var(--gray-color);
+}
+
+.installment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.installment-icons span {
+    background-color: var(--light-color);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.urgency {
+    margin-bottom: 30px;
+    background-color: #fff8e1;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.urgency p {
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.urgency i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+.countdown {
+    margin-top: 10px;
+}
+
+#countdown-timer {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+#copies-left {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Upsell Section */
+.upsell {
+    background-color: white;
+    text-align: center;
+}
+
+.upsell h2 {
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.upsell-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.upsell-card {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 40px 30px;
+    box-shadow: var(--shadow);
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.upsell-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.upsell-card.featured {
+    background-color: var(--secondary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.upsell-card.featured:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.featured-tag {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.upsell-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.upsell-price {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.upsell-card.featured .upsell-price {
+    color: white;
+}
+
+.upsell-card ul {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.upsell-card ul li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.upsell-card ul li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.upsell-card.featured ul li i {
+    color: var(--accent-color);
+}
+
+/* FAQ Section */
+.faq {
+    background-color: var(--light-color);
+}
+
+.faq h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-question h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+.faq-toggle {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.faq-answer {
+    padding: 0 20px 20px;
+    display: none;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.faq-item.active .faq-toggle i {
+    transform: rotate(45deg);
+}
+
+/* Final CTA Section */
+.final-cta {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #cc0000 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 0;
+}
+
+.final-cta h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+}
+
+.final-cta p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+}
+
+.urgency-reminder {
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+.urgency-reminder i {
+    color: var(--accent-color);
+    margin-right: 8px;
+}
+
+#copies-left-reminder {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* Footer */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.footer-logo p {
+    opacity: 0.8;
+}
+
+.footer-links h4,
+.footer-social h4,
+.footer-contact h4 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+}
+
+.footer-links ul li a:hover {
+    color: var(--accent-color);
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 1.5rem;
+    transition: var(--transition);
+}
+
+.social-icons a:hover {
+    color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.footer-contact p {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.footer-contact i {
+    margin-right: 10px;
+    color: var(--accent-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .hero .container {
+        flex-direction: column;
+    }
+    
+    .hero-content {
+        text-align: center;
+    }
+    
+    .trust-badges {
+        justify-content: center;
+    }
+    
+    .benefits-container {
+        flex-direction: column;
+    }
+    
+    .benefits {
+        text-align: center;
+    }
+    
+    .benefits ul li {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+    }
+    
+    nav ul {
+        margin-top: 15px;
+    }
+    
+    section {
+        padding: 60px 0;
+    }
+    
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .upsell-card.featured {
+        transform: scale(1);
+    }
+    
+    .upsell-card.featured:hover {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 576px) {
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    nav ul li {
+        margin: 5px;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .offer-content {
+        padding: 20px;
+    }
+    
+    .original-price {
+        font-size: 1.2rem;
+    }
+    
+    .current-price {
+        font-size: 2rem;
+    }
+}
