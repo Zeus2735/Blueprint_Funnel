@@ -70,15 +70,26 @@ app.post('/send-contact', async (req, res) => {
 // This is a basic structure. You'll need to define your product/price IDs in Stripe
 // and potentially handle different products/prices based on frontend request.
 app.post('/create-checkout-session', async (req, res) => {
+    console.log(`[${new Date().toISOString()}] Received request for /create-checkout-session`); // <-- Added log
     // TODO: Add logic to determine which product/price ID to use if needed
     const priceId = process.env.STRIPE_PRICE_ID; // Your Stripe Price ID for the NIL Blueprint
+    console.log(`[${new Date().toISOString()}] Using Price ID: ${priceId}`); // <-- Added log
 
     if (!priceId) {
-        console.error('Stripe Price ID not configured in .env file');
+        console.error(`[${new Date().toISOString()}] ERROR: Stripe Price ID (STRIPE_PRICE_ID) is missing or invalid in environment variables.`);
         return res.status(500).json({ success: false, message: 'Payment configuration error.' });
     }
 
+    const domainURL = process.env.YOUR_DOMAIN; // Get domain from environment
+    console.log(`[${new Date().toISOString()}] Using domain for redirect: ${domainURL}`); // <-- Added log
+    if (!domainURL) {
+         console.error(`[${new Date().toISOString()}] ERROR: YOUR_DOMAIN environment variable is not set.`);
+         return res.status(500).json({ success: false, message: 'Server configuration error (domain).' });
+    }
+
+
     try {
+        console.log(`[${new Date().toISOString()}] Attempting to create Stripe session...`); // <-- Added log
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -88,15 +99,14 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            // IMPORTANT: Replace with your actual success and cancel URLs
-            success_url: `${process.env.YOUR_DOMAIN}/success.html?session_id={CHECKOUT_SESSION_ID}`, // Example success page
-            cancel_url: `${process.env.YOUR_DOMAIN}/cancel.html`, // Example cancel page
+            success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${domainURL}/cancel.html`,
             // Consider adding automatic_tax: { enabled: true }, if applicable
         });
-
+        console.log(`[${new Date().toISOString()}] Stripe session created successfully: ${session.id}`); // <-- Added log
         res.json({ success: true, id: session.id }); // Send session ID back to the client
     } catch (error) {
-        console.error('Error creating Stripe checkout session:', error);
+        console.error(`[${new Date().toISOString()}] Error creating Stripe checkout session:`, error); // <-- Added log with timestamp
         res.status(500).json({ success: false, message: 'Failed to initiate payment.' });
     }
 });
