@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const response = await fetch('/send-contact', {
+                const response = await fetch('/api/send-contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             try {
                 // Call your backend to create the checkout session
-                const response = await fetch('/create-checkout-session', {
+                const response = await fetch('/api/create-checkout-session', {
                     method: 'POST',
                     // You might send additional data here if needed (e.g., selected product)
                     // headers: { 'Content-Type': 'application/json' },
