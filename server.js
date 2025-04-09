@@ -1,124 +1,71 @@
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
-// Check if Stripe secret key is loaded
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey || !stripeSecretKey.startsWith('sk_')) {
-    console.error('ERROR: Stripe Secret Key (STRIPE_SECRET_KEY) is missing or invalid in your .env file.');
-    console.error('Please ensure the .env file exists in the same directory as server.js and contains a valid STRIPE_SECRET_KEY.');
-    process.exit(1); // Exit the application if the key is missing
-}
-
-const stripe = require('stripe')(stripeSecretKey); // Initialize Stripe with the validated key
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-const port = process.env.PORT || 3000; // Use port from .env or default to 3000
-
-// Middleware to parse JSON and URL-encoded data
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Serve static files (HTML, CSS, JS, Assets) from the current directory
 app.use(express.static(path.join(__dirname)));
 
-// --- Contact Form Endpoint ---
-app.post('/send-contact', async (req, res) => {
-    const { name, email, message } = req.body;
-
-    // Basic validation
-    if (!name || !email || !message) {
-        return res.status(400).json({ success: false, message: 'Please fill in all fields.' });
-    }
-
-    // Configure Nodemailer transporter (replace with your email service details)
-    // IMPORTANT: Use environment variables for credentials!
-    const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST, // e.g., 'smtp.gmail.com'
-        port: process.env.EMAIL_PORT || 587, // e.g., 587 for TLS
-        secure: process.env.EMAIL_PORT == 465, // true for 465, false for other ports
-        auth: {
-            user: process.env.EMAIL_USER, // Your email address
-            pass: process.env.EMAIL_PASS, // Your email password or app password
-        },
-    });
-
-    const mailOptions = {
-        from: `"${name}" <${email}>`, // Sender address (might be overridden by email service)
-        to: process.env.CONTACT_FORM_RECIPIENT, // Your email address to receive messages
-        replyTo: email,
-        subject: `Contact Form Submission from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-        html: `<p><strong>Name:</strong> ${name}</p>
-               <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-               <p><strong>Message:</strong></p>
-               <p>${message.replace(/\n/g, '<br>')}</p>`,
-    };
-
+// Contact Form Handler
+const sendContact = async (req, res) => {
     try {
-        await transporter.sendMail(mailOptions);
-        console.log('Contact form email sent successfully');
-        res.json({ success: true, message: 'Thank you for your message!' });
+        const { name, email, message } = req.body;
+        
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT || 587,
+            secure: process.env.EMAIL_PORT == 465,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+
+        await transporter.sendMail({
+            to: process.env.CONTACT_FORM_RECIPIENT,
+            subject: `Contact from ${name}`,
+            text: message,
+            replyTo: email
+        });
+
+        res.json({ success: true });
     } catch (error) {
-        console.error('Error sending contact form email:', error);
-        res.status(500).json({ success: false, message: 'Failed to send message. Please try again later.' });
+        console.error('Contact form error:', error);
+        res.status(500).json({ error: 'Message failed to send' });
     }
-});
+};
 
-// --- Stripe Payment Endpoint ---
-// This is a basic structure. You'll need to define your product/price IDs in Stripe
-// and potentially handle different products/prices based on frontend request.
-app.post('/create-checkout-session', async (req, res) => {
-    console.log(`[${new Date().toISOString()}] Received request for /create-checkout-session`); // <-- Added log
-    // TODO: Add logic to determine which product/price ID to use if needed
-    const priceId = process.env.STRIPE_PRICE_ID; // Your Stripe Price ID for the NIL Blueprint
-    console.log(`[${new Date().toISOString()}] Using Price ID: ${priceId}`); // <-- Added log
-
-    if (!priceId) {
-        console.error(`[${new Date().toISOString()}] ERROR: Stripe Price ID (STRIPE_PRICE_ID) is missing or invalid in environment variables.`);
-        return res.status(500).json({ success: false, message: 'Payment configuration error.' });
-    }
-
-    const domainURL = process.env.YOUR_DOMAIN; // Get domain from environment
-    console.log(`[${new Date().toISOString()}] Using domain for redirect: ${domainURL}`); // <-- Added log
-    if (!domainURL) {
-         console.error(`[${new Date().toISOString()}] ERROR: YOUR_DOMAIN environment variable is not set.`);
-         return res.status(500).json({ success: false, message: 'Server configuration error (domain).' });
-    }
-
-
+// Stripe Checkout Handler
+const createCheckoutSession = async (req, res) => {
     try {
-        console.log(`[${new Date().toISOString()}] Attempting to create Stripe session...`); // <-- Added log
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
-            line_items: [
-                {
-                    price: priceId,
-                    quantity: 1,
-                },
-            ],
+            line_items: [{
+                price: process.env.STRIPE_PRICE_ID,
+                quantity: 1
+            }],
             mode: 'payment',
-            success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${domainURL}/cancel.html`,
-            // Consider adding automatic_tax: { enabled: true }, if applicable
+            success_url: `${process.env.YOUR_DOMAIN}/success.html`,
+            cancel_url: `${process.env.YOUR_DOMAIN}/cancel.html`
         });
-        console.log(`[${new Date().toISOString()}] Stripe session created successfully: ${session.id}`); // <-- Added log
-        res.json({ success: true, id: session.id }); // Send session ID back to the client
+        
+        res.json({ id: session.id });
     } catch (error) {
-        console.error(`[${new Date().toISOString()}] Error creating Stripe checkout session:`, error); // <-- Added log with timestamp
-        res.status(500).json({ success: false, message: 'Failed to initiate payment.' });
+        console.error('Checkout error:', error);
+        res.status(500).json({ error: 'Checkout failed' });
     }
-});
+};
 
-// --- Serve the main landing page ---
-// This route ensures that visiting the root URL serves your index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// Export handlers for Vercel
+module.exports = {
+    sendContact,
+    createCheckoutSession
+};
 
-
-// Start the server
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
-});
+// Local development server
+if (require.main === module) {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+}
