@@ -4,12 +4,6 @@
     { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/styles.css", "dest": "/styles.css" },
-    { "src": "/script.js", "dest": "/script.js" },
-    { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
-    { "src": "/success.html", "dest": "/success.html" },
-    { "src": "/cancel.html", "dest": "/cancel.html" },
-    { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
   ]
 }
