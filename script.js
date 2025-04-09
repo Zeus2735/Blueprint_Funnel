@@ -158,4 +158,117 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     animateOnScroll();
+
+    // --- Contact Form Submission Handler ---
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Clear previous status messages
+            formStatus.textContent = '';
+            formStatus.className = 'form-status'; // Reset classes
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            // Basic frontend validation (optional, server validates too)
+            if (!data.name || !data.email || !data.message) {
+                formStatus.textContent = 'Please fill in all fields.';
+                formStatus.classList.add('error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/send-contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    formStatus.textContent = result.message || 'Message sent successfully!';
+                    formStatus.classList.add('success');
+                    contactForm.reset(); // Clear the form fields
+                } else {
+                    formStatus.textContent = result.message || 'An error occurred. Please try again.';
+                    formStatus.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Error submitting contact form:', error);
+                formStatus.textContent = 'An error occurred. Please check your connection and try again.';
+                formStatus.classList.add('error');
+            }
+        });
+    }
+
+    // --- Stripe Checkout Button Handler ---
+    const checkoutButton = document.getElementById('checkout-button');
+    // IMPORTANT: Replace with your actual Stripe Public Key from your .env file
+    // Ideally, fetch this key from your backend instead of hardcoding it.
+    const stripePublicKey = 'pk_test_51QTlW7AhbY1vKIDZKRjjteEw5FCXiXerqiHrJenkupqAeX9pO1ujADWFuN3wQ60U8Ubx74f2tnrBDTHAiEfyCwtK00PQZFdB9m'; // <-- Updated with your Test Key
+    
+    if (!stripePublicKey || !stripePublicKey.startsWith('pk_')) {
+        console.error('Stripe Public Key is missing or invalid. Please replace the placeholder in script.js');
+        // Optionally disable the button or show an error message
+        if(checkoutButton) checkoutButton.disabled = true;
+    } else if (checkoutButton) {
+        const stripe = Stripe(stripePublicKey); // Initialize Stripe.js
+
+        checkoutButton.addEventListener('click', async function(e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            // Optional: Add a loading state to the button
+            checkoutButton.textContent = 'Processing...';
+            checkoutButton.disabled = true;
+
+            try {
+                // Call your backend to create the checkout session
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    // You might send additional data here if needed (e.g., selected product)
+                    // headers: { 'Content-Type': 'application/json' },
+                    // body: JSON.stringify({ items: [...] }) 
+                });
+
+                const session = await response.json();
+
+                if (session.success && session.id) {
+                    // Redirect to Stripe Checkout
+                    const result = await stripe.redirectToCheckout({
+                        sessionId: session.id
+                    });
+
+                    if (result.error) {
+                        // If redirectToCheckout fails due to browser compatibility or network issue
+                        console.error('Stripe redirect error:', result.error.message);
+                        alert('Could not redirect to payment page. Please try again.'); 
+                        // Reset button state
+                        checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
+                        checkoutButton.disabled = false;
+                    }
+                } else {
+                    console.error('Failed to create checkout session:', session.message);
+                    alert(session.message || 'Could not initiate payment. Please try again.');
+                    // Reset button state
+                    checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
+                    checkoutButton.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error during checkout process:', error);
+                alert('An error occurred during the payment process. Please try again.');
+                // Reset button state
+                checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
+                checkoutButton.disabled = false;
+            }
+        });
+    } else {
+         console.error('Checkout button with ID "checkout-button" not found.');
+    }
 });

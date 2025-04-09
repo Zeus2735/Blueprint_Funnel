@@ -1,0 +1,26 @@
+{
+  "name": "tyreelandingpage",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zeus2735/Blueprint_Funnel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zeus2735/Blueprint_Funnel/issues"
+  },
+  "homepage": "https://github.com/Zeus2735/Blueprint_Funnel#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "nodemailer": "^6.10.0",
+    "stripe": "^18.0.0"
+  }
+}
