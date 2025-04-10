@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const stripe = Stripe(stripePublicKey); // Initialize Stripe.js
 
         checkoutButton.addEventListener('click', async function(e) {
+            console.log('Checkout button clicked!'); // <-- Add log to check if listener fires
             e.preventDefault(); // Prevent default link behavior
 
             // Optional: Add a loading state to the button
