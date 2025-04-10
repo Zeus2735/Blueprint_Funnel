@@ -1,0 +1,14 @@
+[build]
+  # Directory containing the serverless functions
+  functions = "netlify/functions"
+  # Directory containing the static frontend files (HTML, CSS, JS, Assets)
+  # Assuming everything is in the root for this project
+  publish = "." 
+  # Build command (installs dependencies needed by functions)
+  command = "npm install"
+
+# Redirect rule to handle single-page application routing (optional but good practice)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
