@@ -33,17 +33,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
             const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
             
-            if (targetElement) {
-                window.scrollTo({
+            // Only proceed if href is not just "#" and starts with "#"
+            if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                e.preventDefault(); // Prevent default jump only for valid internal links
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
                     top: targetElement.offsetTop - 80, // Adjust for header height
                     behavior: 'smooth'
                 });
-            }
+              } // <-- Added missing closing brace for if(targetElement)
+            } // <-- Added missing closing brace for if(targetId...)
         });
     });
     
