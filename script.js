@@ -126,9 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileMenuBtn.className = 'mobile-menu-btn';
         mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         
-        // Insert before nav
-        header.insertBefore(mobileMenuBtn, nav);
-        
+        // Append to the header's container instead of inserting before nav
+        const headerContainer = header.querySelector('.container');
+        if (headerContainer) {
+             headerContainer.appendChild(mobileMenuBtn); // Append button inside the container
+        } else {
+             console.error("Header container not found for mobile menu button.");
+        }
+
         // Add click event
         mobileMenuBtn.addEventListener('click', function() {
             nav.classList.toggle('active');
