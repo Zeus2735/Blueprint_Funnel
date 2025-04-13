@@ -183,8 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const formStatus = document.getElementById('form-status');
 
     if (contactForm) {
+        const submitButton = contactForm.querySelector('button[type="submit"]'); // Get the submit button
+
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault(); // Prevent default form submission
+
+            // Disable button and show sending state
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+            }
 
             // Clear previous status messages
             formStatus.textContent = '';
@@ -215,14 +223,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     formStatus.textContent = result.message || 'Message sent successfully!';
                     formStatus.classList.add('success');
                     contactForm.reset(); // Clear the form fields
+                    if (submitButton) { // Reset button on success (optional, form clears anyway)
+                         submitButton.disabled = false;
+                         submitButton.textContent = 'Send Message';
+                    }
                 } else {
                     formStatus.textContent = result.message || 'An error occurred. Please try again.';
                     formStatus.classList.add('error');
+                     if (submitButton) { // Re-enable button on error
+                         submitButton.disabled = false;
+                         submitButton.textContent = 'Send Message';
+                     }
                 }
             } catch (error) {
                 console.error('Error submitting contact form:', error);
                 formStatus.textContent = 'An error occurred. Please check your connection and try again.';
                 formStatus.classList.add('error');
+                 if (submitButton) { // Re-enable button on fetch error
+                     submitButton.disabled = false;
+                     submitButton.textContent = 'Send Message';
+                 }
             }
         });
     }

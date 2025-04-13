@@ -985,12 +985,59 @@ footer {
 
 @media (max-width: 768px) {
     header .container {
-        flex-direction: column;
+        flex-direction: row; /* Keep logo and button on same line */
+        justify-content: space-between; /* Space them out */
+        position: relative; /* Needed for absolute positioning of nav */
+        padding-top: 10px; /* Add some padding */
+        padding-bottom: 10px;
+    }
+
+    nav {
+        /* Position nav below header when active */
+        position: absolute;
+        top: 100%; /* Position below the header */
+        left: 0;
+        width: 100%;
+        background-color: var(--secondary-color); /* Match header */
+        max-height: 0; /* Start hidden */
+        overflow: hidden;
+        transition: max-height 0.4s ease-out; /* Smooth transition */
+        z-index: 1050; /* Ensure it's above content */
+    }
+
+    nav.active {
+         max-height: 500px; /* Or enough height to show all items */
     }
     
     nav ul {
-        margin-top: 15px;
+        margin-top: 0; /* Remove previous margin */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+        padding: 0; /* Remove previous padding */
     }
+
+    nav ul li {
+        margin-left: 0;
+        text-align: center; /* Center nav links */
+        width: 100%;
+    }
+    nav ul li a {
+        display: block; /* Make links take full width */
+        padding: 15px 20px; /* Adjust padding */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+     nav ul li:last-child a {
+        border-bottom: none;
+    }
+
+    /* Mobile Menu Button Styles - Initially hide it */
+     .mobile-menu-btn {
+         display: block; /* Show the button */
+         font-size: 1.8rem;
+         color: white;
+         cursor: pointer;
+         padding: 5px; /* Add padding for easier tapping */
+     }
     
     section {
         padding: 60px 0;
