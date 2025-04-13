@@ -148,21 +148,31 @@ document.addEventListener('DOMContentLoaded', function() {
         setupMobileMenu();
     }
     
-    // Add animation on scroll
+    // Add animation on scroll (using new class)
     function animateOnScroll() {
-        // Added .audiobook-section to the querySelectorAll list
-        const elements = document.querySelectorAll('.product-highlights, .audiobook-section, .video-section, .testimonials, .pricing, .upsell, .faq, .final-cta');
+        const elements = document.querySelectorAll('.product-highlights, .audiobook-section, .video-section, .testimonials, .pricing, .upsell, .faq, .final-cta, .contact-form-section'); 
         
+        // Add fade-slide-up class initially to hide elements
+        elements.forEach(el => {
+            if (el) { // Check if element exists before adding class
+                 el.classList.add('fade-slide-up');
+            }
+        });
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+                    entry.target.classList.add('animate'); // Add 'animate' to trigger transition
+                    // Optional: Stop observing once animated
+                    // observer.unobserve(entry.target); 
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.15 }); // Slightly higher threshold
         
         elements.forEach(element => {
-            observer.observe(element);
+             if (element) { // Check if element exists before observing
+                observer.observe(element);
+             }
         });
     }
     
