@@ -150,7 +150,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add animation on scroll
     function animateOnScroll() {
-        const elements = document.querySelectorAll('.product-highlights, .video-section, .testimonials, .pricing, .upsell, .faq, .final-cta');
+        // Added .audiobook-section to the querySelectorAll list
+        const elements = document.querySelectorAll('.product-highlights, .audiobook-section, .video-section, .testimonials, .pricing, .upsell, .faq, .final-cta');
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {

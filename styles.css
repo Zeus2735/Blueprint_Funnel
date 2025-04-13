@@ -101,6 +101,68 @@ section {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Audiobook Section */
+.audiobook-section {
+    background-color: white; /* Or var(--light-color) */
+    padding: 80px 0;
+}
+
+.audiobook-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.audiobook-image {
+    flex: 1;
+    min-width: 280px; /* Ensure image doesn't get too small */
+    max-width: 350px; 
+    text-align: center;
+    margin: 0 auto 20px auto; /* Center image when wrapped */
+}
+
+.audiobook-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.audiobook-content {
+    flex: 2;
+    min-width: 300px; /* Ensure content has space */
+}
+
+.audiobook-content h2 {
+    font-size: 2.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.audiobook-content p {
+    margin-bottom: 20px;
+    color: var(--gray-color);
+}
+
+.audiobook-content ul {
+    margin-bottom: 30px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.audiobook-content ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.audiobook-content ul li i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    font-size: 1.1rem;
+    margin-top: 4px;
+}
+
 /* Header Styles */
 header {
     background-color: var(--secondary-color);
