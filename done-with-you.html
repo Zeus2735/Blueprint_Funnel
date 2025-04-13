@@ -3,29 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Done-With-You Program | Premier Elite Basketball Academy</title> <!-- Updated Title -->
+    <title>Done-With-You Program | Premier Elite Basketball Academy</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Stripe.js (Keep or remove depending if purchase happens on this page) -->
-    <!-- <script src="https://js.stripe.com/v3/"></script> -->
     <style>
-        /* Basic styling for content area */
         .main-content { padding: 60px 0; }
         .main-content .container { max-width: 900px; }
+        .course-section { margin-bottom: 40px; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: var(--shadow); opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .course-section.animate { opacity: 1; transform: translateY(0); }
+        .course-image { text-align: center; margin-bottom: 30px; }
+        .course-image img { max-width: 100%; height: auto; border-radius: 8px; }
+        .feature-list li { margin-bottom: 15px; display: flex; align-items: flex-start; }
+        .feature-list i { color: var(--primary-color); margin-right: 10px; margin-top: 5px; }
+        .whop-join { text-align: center; margin-top: 40px; }
+        .whop-join img { max-height: 40px; vertical-align: middle; margin-right: 10px; }
+        .premium-highlight { background-color: var(--secondary-color); color: white; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .premium-highlight h3 { color: var(--accent-color); }
+        .premium-highlight li i { color: var(--accent-color); }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo">
-                <!-- Replaced text logo with image -->
                 <img src="Assets/Logo.jpg" alt="Premier Elite Basketball Academy Logo" style="max-height: 50px;"> 
             </div>
             <nav>
-                 <!-- Update nav links if needed, e.g., link back to home -->
                 <ul>
                     <li><a href="index.html#products">Products</a></li>
                     <li><a href="index.html#testimonials">Testimonials</a></li>
@@ -36,29 +42,60 @@
         </div>
     </header>
 
-    <!-- Main Content Section for Course Details -->
     <main class="main-content">
         <div class="container">
-            <h1>Done-With-You Recruitment Program</h1>
-            <p>Details about the Done-With-You program will go here.</p>
-            <!-- Add course content, features, pricing, etc. -->
+            <section class="course-section course-intro">
+                <h1>Ultimate Support: The Done-With-You Recruitment Program</h1>
+                 <div class="course-image">
+                    <img src="Assets/Done-With-You.png" alt="Done-With-You Program Visual">
+                </div>
+                <p>Accelerate your recruitment journey with our premium Done-With-You Program. This exclusive offering combines all the resources of the Self-Paced Course with personalized, hands-on guidance from Tyree and our expert team. We work side-by-side with you to craft your strategy, connect with coaches, and maximize your opportunities.</p>
+            </section>
 
-            <!-- Link to Whop Community -->
-            <div class="cta-button" style="margin-top: 30px; text-align: center;">
-                 <a href="https://whop.com/nil-blueprint-hub/" target="_blank" class="btn btn-primary">Join FREE Whop Community for Access Details</a>
-            </div>
+            <section class="course-section course-features">
+                <h2>What You Get (Everything in Self-Paced PLUS):</h2>
+                <div class="premium-highlight">
+                    <h3>Personalized Guidance & Support</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-user-friends"></i> <strong>1-on-1 Coaching with Tyree:</strong> Regular dedicated coaching sessions to refine your skills, strategy, and mindset directly with Tyree McGhee.</li>
+                        <li><i class="fas fa-map-signs"></i> <strong>Personalized Recruitment Plan:</strong> We develop a custom roadmap tailored to your specific academic profile, athletic abilities, and target schools.</li>
+                        <li><i class="fas fa-network-wired"></i> <strong>Direct College Coach Introductions:</strong> Leverage our network as we facilitate introductions to coaches at programs that fit your profile.</li>
+                        <li><i class="fas fa-film"></i> <strong>Video Highlight Reel Creation:</strong> Professional assistance in selecting clips and creating a compelling highlight reel that showcases your talent effectively.</li>
+                    </ul>
+                </div>
+                 <h3 style="margin-top: 30px;">Includes All Self-Paced Resources:</h3>
+                 <ul class="feature-list">
+                    <li><i class="fas fa-video"></i> Complete Video Training Library</li>
+                    <li><i class="fas fa-book-open"></i> Recruitment Strategy Workbook</li>
+                    <li><i class="fas fa-database"></i> College Coach Database Access</li>
+                    <li><i class="fas fa-users"></i> Monthly Group Q&A Sessions</li>
+                 </ul>
+            </section>
 
-             <!-- Example Purchase Button (if applicable on this page) -->
-            <!-- <div class="cta-button" style="margin-top: 30px;">
-                 <a href="#" id="dwy-checkout-button" class="btn btn-primary">Purchase Done-With-You Program Now!</a>
-            </div> -->
+            <section class="course-section course-benefits">
+                <h2>Benefits</h2>
+                 <ul>
+                    <li>Receive expert, personalized guidance every step of the way.</li>
+                    <li>Save time and avoid common pitfalls with a custom strategy.</li>
+                    <li>Gain direct access to college coaches through trusted introductions.</li>
+                    <li>Present your skills professionally with a high-quality highlight reel.</li>
+                    <li>Maximize your chances of securing the best possible athletic and academic opportunities.</li>
+                    <li>Includes all the foundational knowledge and resources from the Self-Paced course.</li>
+                </ul>
+            </section>
+            
+            <section class="course-section whop-join">
+                 <h2>Ready for Personalized Support?</h2>
+                 <p>Join our exclusive Whop community to get access details and start your Done-With-You journey!</p>
+                 <img src="Assets/Whop_logo.jpg" alt="Whop Logo">
+                 <a href="https://whop.com/nil-blueprint-hub/" target="_blank" class="btn btn-primary">Join FREE Whop Community Now!</a>
+            </section>
         </div>
     </main>
 
-
-    <!-- Footer -->
     <footer id="contact">
-        <div class="container">
+        <!-- Footer content from index.html -->
+         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
                     <h3>Premier Elite Basketball Academy</h3>
@@ -97,7 +134,24 @@
         </div>
     </footer>
 
-    <!-- Link to main script or a dedicated script for this page -->
-    <!-- <script src="script.js"></script> --> 
+    <script>
+        // Simple scroll animation for course sections
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.course-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        // Optional: Stop observing once animated
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script> 
 </body>
 </html>

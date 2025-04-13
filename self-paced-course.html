@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Self-Paced Course | Premier Elite Basketball Academy</title> <!-- Updated Title -->
+    <title>Self-Paced Course | Premier Elite Basketball Academy</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Stripe.js (Keep or remove depending if purchase happens on this page) -->
-    <!-- <script src="https://js.stripe.com/v3/"></script> -->
     <style>
-        /* Basic styling for content area */
         .main-content { padding: 60px 0; }
         .main-content .container { max-width: 900px; }
+        .course-section { margin-bottom: 40px; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: var(--shadow); opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .course-section.animate { opacity: 1; transform: translateY(0); }
+        .course-image { text-align: center; margin-bottom: 30px; }
+        .course-image img { max-width: 100%; height: auto; border-radius: 8px; }
+        .feature-list li { margin-bottom: 15px; display: flex; align-items: flex-start; }
+        .feature-list i { color: var(--primary-color); margin-right: 10px; margin-top: 5px; }
+        .whop-join { text-align: center; margin-top: 40px; }
+        .whop-join img { max-height: 40px; vertical-align: middle; margin-right: 10px; }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <div class="logo">
-                <!-- Replaced text logo with image -->
                 <img src="Assets/Logo.jpg" alt="Premier Elite Basketball Academy Logo" style="max-height: 50px;"> 
             </div>
             <nav>
-                 <!-- Update nav links if needed, e.g., link back to home -->
                 <ul>
                     <li><a href="index.html#products">Products</a></li>
                     <li><a href="index.html#testimonials">Testimonials</a></li>
@@ -36,29 +39,50 @@
         </div>
     </header>
 
-    <!-- Main Content Section for Course Details -->
     <main class="main-content">
         <div class="container">
-            <h1>Self-Paced Recruitment Course</h1>
-            <p>Details about the self-paced course will go here.</p>
-            <!-- Add course content, features, pricing, etc. -->
+            <section class="course-section course-intro">
+                <h1>Master Recruitment Your Way: The Self-Paced Course</h1>
+                <div class="course-image">
+                    <img src="Assets/Self-Paced-Course.jpeg" alt="Self-Paced Course Visual">
+                </div>
+                <p>Take control of your basketball recruitment journey with our comprehensive Self-Paced Course. Designed for motivated athletes and parents, this program provides all the tools, knowledge, and resources you need to navigate the complex world of college recruitment and NIL opportunities at your own speed.</p>
+            </section>
+
+            <section class="course-section course-features">
+                <h2>What You'll Get</h2>
+                <ul class="feature-list">
+                    <li><i class="fas fa-video"></i> <strong>Complete Video Training Library:</strong> Access hours of expert video content covering every aspect of recruitment, from building your profile to communicating with coaches and understanding eligibility.</li>
+                    <li><i class="fas fa-book-open"></i> <strong>Recruitment Strategy Workbook:</strong> A step-by-step interactive workbook to help you define your goals, identify target schools, craft your outreach messages, and track your progress.</li>
+                    <li><i class="fas fa-database"></i> <strong>College Coach Database Access:</strong> Gain access to our curated database of college coaches across different divisions, making it easier to find the right contacts for your target schools.</li>
+                    <li><i class="fas fa-users"></i> <strong>Monthly Group Q&A Sessions:</strong> Join live online sessions with recruitment experts and fellow athletes to ask questions, share experiences, and get timely advice.</li>
+                </ul>
+            </section>
+
+            <section class="course-section course-benefits">
+                <h2>Benefits</h2>
+                <ul>
+                    <li>Learn and implement strategies on your own schedule.</li>
+                    <li>Gain lifetime access to valuable video content and resources.</li>
+                    <li>Develop a clear, actionable recruitment plan using the workbook.</li>
+                    <li>Efficiently find and contact college coaches.</li>
+                    <li>Connect with a community and get answers in monthly Q&A sessions.</li>
+                    <li>Build a strong foundation for your athletic and academic future.</li>
+                </ul>
+            </section>
             
-            <!-- Link to Whop Community -->
-            <div class="cta-button" style="margin-top: 30px; text-align: center;">
-                 <a href="https://whop.com/nil-blueprint-hub/" target="_blank" class="btn btn-primary">Join FREE Whop Community for Access Details</a>
-            </div>
-            
-            <!-- Example Purchase Button (if applicable on this page) -->
-            <!-- <div class="cta-button" style="margin-top: 30px;">
-                 <a href="#" id="self-paced-checkout-button" class="btn btn-primary">Purchase Self-Paced Course Now!</a>
-            </div> -->
+            <section class="course-section whop-join">
+                 <h2>Ready to Start?</h2>
+                 <p>Join our exclusive Whop community to get access details and connect with other aspiring athletes!</p>
+                 <img src="Assets/Whop_logo.jpg" alt="Whop Logo">
+                 <a href="https://whop.com/nil-blueprint-hub/" target="_blank" class="btn btn-primary">Join FREE Whop Community Now!</a>
+            </section>
         </div>
     </main>
 
-
-    <!-- Footer -->
     <footer id="contact">
-        <div class="container">
+        <!-- Footer content from index.html -->
+         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
                     <h3>Premier Elite Basketball Academy</h3>
@@ -97,7 +121,24 @@
         </div>
     </footer>
 
-    <!-- Link to main script or a dedicated script for this page -->
-    <!-- <script src="script.js"></script> --> 
+    <script>
+        // Simple scroll animation for course sections
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.course-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        // Optional: Stop observing once animated
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script> 
 </body>
 </html>
