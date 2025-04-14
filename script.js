@@ -249,12 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Stripe Checkout Button Handler ---
     const checkoutButton = document.getElementById('checkout-button');
-    // IMPORTANT: Replace with your actual Stripe Public Key from your .env file
-    // Ideally, fetch this key from your backend instead of hardcoding it.
-    const stripePublicKey = 'pk_test_51QTlW7AhbY1vKIDZKRjjteEw5FCXiXerqiHrJenkupqAeX9pO1ujADWFuN3wQ60U8Ubx74f2tnrBDTHAiEfyCwtK00PQZFdB9m'; // <-- Updated with your Test Key
+    // IMPORTANT: Using LIVE Stripe Public Key now!
+    const stripePublicKey = 'pk_live_51QTlW7AhbY1vKIDZoSTH2CnZ2Hn398FR1Ry0hYUSygDLO242gLAFPps3rts1daNnqnm851rHfpIh4QCR2SQTTwOj008evm180L'; // <-- Updated with your LIVE Key
     
-    if (!stripePublicKey || !stripePublicKey.startsWith('pk_')) {
-        console.error('Stripe Public Key is missing or invalid. Please replace the placeholder in script.js');
+    if (!stripePublicKey || !stripePublicKey.startsWith('pk_live')) { // Check for pk_live_ prefix
+        console.error('Stripe LIVE Public Key is missing or invalid in script.js');
         // Optionally disable the button or show an error message
         if(checkoutButton) checkoutButton.disabled = true;
     } else if (checkoutButton) {
