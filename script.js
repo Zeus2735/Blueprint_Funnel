@@ -247,68 +247,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Stripe Checkout Button Handler ---
-    const checkoutButton = document.getElementById('checkout-button');
-    // IMPORTANT: Using LIVE Stripe Public Key now!
-    const stripePublicKey = 'pk_live_51QTlW7AhbY1vKIDZoSTH2CnZ2Hn398FR1Ry0hYUSygDLO242gLAFPps3rts1daNnqnm851rHfpIh4QCR2SQTTwOj008evm180L'; // <-- Updated with your LIVE Key
+    // --- Stripe Initialization (needed for modal submission) ---
+    let stripe; // Declare stripe variable in a broader scope
+    const stripePublicKey = 'pk_live_51QTlW7AhbY1vKIDZoSTH2CnZ2Hn398FR1Ry0hYUSygDLO242gLAFPps3rts1daNnqnm851rHfpIh4QCR2SQTTwOj008evm180L'; // <-- LIVE Key
     
-    if (!stripePublicKey || !stripePublicKey.startsWith('pk_live')) { // Check for pk_live_ prefix
+    if (!stripePublicKey || !stripePublicKey.startsWith('pk_live')) { 
         console.error('Stripe LIVE Public Key is missing or invalid in script.js');
-        // Optionally disable the button or show an error message
-        if(checkoutButton) checkoutButton.disabled = true;
-    } else if (checkoutButton) {
-        const stripe = Stripe(stripePublicKey); // Initialize Stripe.js
-
-        checkoutButton.addEventListener('click', async function(e) {
-            console.log('Checkout button clicked!'); // <-- Add log to check if listener fires
-            e.preventDefault(); // Prevent default link behavior
-
-            // Optional: Add a loading state to the button
-            checkoutButton.textContent = 'Processing...';
-            checkoutButton.disabled = true;
-
-            try {
-                // Call your backend to create the checkout session
-                const response = await fetch('/.netlify/functions/create-checkout-session', {
-                    method: 'POST',
-                    // You might send additional data here if needed (e.g., selected product)
-                    // headers: { 'Content-Type': 'application/json' },
-                    // body: JSON.stringify({ items: [...] }) 
-                });
-
-                const session = await response.json();
-
-                if (session.success && session.id) {
-                    // Redirect to Stripe Checkout
-                    const result = await stripe.redirectToCheckout({
-                        sessionId: session.id
-                    });
-
-                    if (result.error) {
-                        // If redirectToCheckout fails due to browser compatibility or network issue
-                        console.error('Stripe redirect error:', result.error.message);
-                        alert('Could not redirect to payment page. Please try again.'); 
-                        // Reset button state
-                        checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
-                        checkoutButton.disabled = false;
-                    }
-                } else {
-                    console.error('Failed to create checkout session:', session.message);
-                    alert(session.message || 'Could not initiate payment. Please try again.');
-                    // Reset button state
-                    checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
-                    checkoutButton.disabled = false;
-                }
-            } catch (error) {
-                console.error('Error during checkout process:', error);
-                alert('An error occurred during the payment process. Please try again.');
-                // Reset button state
-                checkoutButton.textContent = 'Get My NIL Blueprint + FREE MiCard Now!';
-                checkoutButton.disabled = false;
-            }
-        });
     } else {
-         console.error('Checkout button with ID "checkout-button" not found.');
+        stripe = Stripe(stripePublicKey); // Initialize Stripe.js here
     }
 
     // --- Lead Capture Modal Logic ---
@@ -341,19 +287,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modify the original checkout button's listener to OPEN the modal
     if (originalCheckoutButton) {
-         // Remove previous Stripe listener if it exists (to avoid conflict)
-         // This part is tricky without seeing the exact previous state, 
-         // but assuming the listener was added as below:
-         const oldListener = async function(e) { /* ... previous listener code ... */ }; // Placeholder
-         // originalCheckoutButton.removeEventListener('click', oldListener); // Ideally remove old one
-
-         // Add NEW listener to open modal
+         // --- MODIFIED: Original Checkout Button Listener ---
+         // This button NOW ONLY OPENS the modal
          originalCheckoutButton.addEventListener('click', function(e) {
-             e.preventDefault(); // Prevent default link behavior
-             openModal();
+             e.preventDefault(); // Prevent default link behavior (scrolling to #)
+             console.log('Original checkout button clicked - opening modal.');
+             openModal(); // Call function to show the modal
          });
+         // --- End of MODIFIED Listener ---
+         
     } else {
-         console.error("Original checkout button (#checkout-button) not found for modal trigger.");
+         console.error("Original checkout button (#checkout-button) not found.");
     }
 
 
