@@ -310,4 +310,158 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
          console.error('Checkout button with ID "checkout-button" not found.');
     }
+
+    // --- Lead Capture Modal Logic ---
+    const modalOverlay = document.getElementById('lead-capture-modal');
+    const leadCaptureForm = document.getElementById('lead-capture-form');
+    const modalFormStatus = document.getElementById('modal-form-status');
+    const originalCheckoutButton = document.getElementById('checkout-button'); // The button that OPENS the modal
+
+    // Function to open the modal
+    function openModal() {
+        if (modalOverlay) {
+            modalOverlay.style.display = 'flex'; // Show overlay
+            setTimeout(() => modalOverlay.classList.add('active'), 10); // Add active class for transition
+        }
+    }
+
+    // Function to close the modal
+    window.closeModal = function() { // Make it global so inline onclick works
+        if (modalOverlay) {
+            modalOverlay.classList.remove('active'); // Remove active class
+             // Reset form status if needed
+            if(modalFormStatus) {
+                modalFormStatus.textContent = '';
+                modalFormStatus.className = 'form-status';
+            }
+            // Wait for transition before hiding
+            setTimeout(() => modalOverlay.style.display = 'none'), 300; 
+        }
+    }
+
+    // Modify the original checkout button's listener to OPEN the modal
+    if (originalCheckoutButton) {
+         // Remove previous Stripe listener if it exists (to avoid conflict)
+         // This part is tricky without seeing the exact previous state, 
+         // but assuming the listener was added as below:
+         const oldListener = async function(e) { /* ... previous listener code ... */ }; // Placeholder
+         // originalCheckoutButton.removeEventListener('click', oldListener); // Ideally remove old one
+
+         // Add NEW listener to open modal
+         originalCheckoutButton.addEventListener('click', function(e) {
+             e.preventDefault(); // Prevent default link behavior
+             openModal();
+         });
+    } else {
+         console.error("Original checkout button (#checkout-button) not found for modal trigger.");
+    }
+
+
+    // Handle submission of the form INSIDE the modal
+    if (leadCaptureForm) {
+        const modalSubmitButton = leadCaptureForm.querySelector('button[type="submit"]');
+
+        leadCaptureForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+             // Disable button and show sending state
+            if (modalSubmitButton) {
+                modalSubmitButton.disabled = true;
+                modalSubmitButton.textContent = 'Processing...';
+            }
+             // Clear previous status messages
+            if(modalFormStatus) {
+                modalFormStatus.textContent = '';
+                modalFormStatus.className = 'form-status';
+            }
+
+            const formData = new FormData(leadCaptureForm);
+            const leadData = Object.fromEntries(formData.entries());
+
+            // Basic validation
+            if (!leadData.name || !leadData.email) {
+                 if(modalFormStatus) {
+                    modalFormStatus.textContent = 'Please fill in all fields.';
+                    modalFormStatus.classList.add('error');
+                 }
+                 if (modalSubmitButton) {
+                     modalSubmitButton.disabled = false;
+                     modalSubmitButton.textContent = 'Proceed to Payment';
+                 }
+                return;
+            }
+
+            // --- Call NEW backend function ---
+            try {
+                // We need a new backend function: process-lead-and-checkout
+                // This function should first email the lead, then create the Stripe session
+                const response = await fetch('/.netlify/functions/process-lead-and-checkout', { // <-- NEW ENDPOINT
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData) 
+                });
+
+                const session = await response.json();
+
+                if (session.success && session.id) {
+                    // Redirect to Stripe Checkout (using the key already initialized)
+                     if (stripe) { // Check if stripe object exists
+                        const result = await stripe.redirectToCheckout({ sessionId: session.id });
+                        if (result.error) {
+                            console.error('Stripe redirect error:', result.error.message);
+                             if(modalFormStatus) {
+                                modalFormStatus.textContent = 'Could not redirect to payment page. Please try again.';
+                                modalFormStatus.classList.add('error');
+                             }
+                        }
+                        // If redirect fails or user comes back, re-enable button
+                         if (modalSubmitButton) {
+                             modalSubmitButton.disabled = false;
+                             modalSubmitButton.textContent = 'Proceed to Payment';
+                         }
+                    } else {
+                         console.error("Stripe object not initialized.");
+                          if(modalFormStatus) {
+                            modalFormStatus.textContent = 'Payment system error. Please refresh.';
+                            modalFormStatus.classList.add('error');
+                          }
+                           if (modalSubmitButton) {
+                             modalSubmitButton.disabled = false;
+                             modalSubmitButton.textContent = 'Proceed to Payment';
+                         }
+                    }
+                } else {
+                    console.error('Failed to process lead or create checkout session:', session.message);
+                     if(modalFormStatus) {
+                        modalFormStatus.textContent = session.message || 'Could not initiate payment. Please try again.';
+                        modalFormStatus.classList.add('error');
+                     }
+                      if (modalSubmitButton) {
+                         modalSubmitButton.disabled = false;
+                         modalSubmitButton.textContent = 'Proceed to Payment';
+                     }
+                }
+            } catch (error) {
+                console.error('Error during lead capture/checkout process:', error);
+                 if(modalFormStatus) {
+                    modalFormStatus.textContent = 'An error occurred. Please check connection.';
+                    modalFormStatus.classList.add('error');
+                 }
+                  if (modalSubmitButton) {
+                     modalSubmitButton.disabled = false;
+                     modalSubmitButton.textContent = 'Proceed to Payment';
+                 }
+            }
+        });
+    }
+
+    // Close modal if clicking outside the content area
+     if (modalOverlay) {
+         modalOverlay.addEventListener('click', function(e) {
+             if (e.target === modalOverlay) { // Check if click is on the overlay itself
+                 closeModal();
+             }
+         });
+     }
+
 });
