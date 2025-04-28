@@ -68,6 +68,7 @@ exports.handler = async (event, context) => {
       // --- Updated line_items to allow adjustable quantity ---
       line_items: [{
         price: priceId, // Your product's Price ID
+        quantity: 1, // Add initial quantity back, it's required by Stripe
         adjustable_quantity: { // Allows quantity change on Stripe page
           enabled: true,
           minimum: 1,
