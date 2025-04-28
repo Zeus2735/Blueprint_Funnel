@@ -103,18 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     startCountdown();
     
-    // Video placeholder click handler
-    const videoPlaceholder = document.querySelector('.video-placeholder');
-    if (videoPlaceholder) {
-        videoPlaceholder.addEventListener('click', function() {
-            // Replace with actual video embed code when available
-            this.innerHTML = `
-                <div class="video-message">
-                    <p>Video coming soon! Check back later for Tyree's explanation of the NIL Blueprint.</p>
-                </div>
-            `;
-        });
-    }
+    // Video placeholder logic removed as video is now directly embedded in HTML
     
     // Mobile menu toggle (for smaller screens)
     function setupMobileMenu() {
