@@ -65,7 +65,16 @@ exports.handler = async (event, context) => {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
+      // --- Updated line_items to allow adjustable quantity ---
+      line_items: [{
+        price: priceId, // Your product's Price ID
+        adjustable_quantity: { // Allows quantity change on Stripe page
+          enabled: true,
+          minimum: 1,
+          maximum: 10 // You can adjust this maximum value if needed
+        },
+      }],
+      // --- End of update ---
       mode: 'payment',
       success_url: `${domainURL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domainURL}/cancel.html`,
