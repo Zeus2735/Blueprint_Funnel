@@ -4,8 +4,12 @@
 .env.*
 !.env.example
 
-# Node dependencies (if installed within functions)
+# Node dependencies
+node_modules/
 netlify/functions/node_modules/
+
+# Backup files
+styles_backup.css
 
 # Operating System files
 .DS_Store
