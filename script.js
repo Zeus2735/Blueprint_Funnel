@@ -137,35 +137,36 @@ document.addEventListener('DOMContentLoaded', function() {
         setupMobileMenu();
     }
     
-    // Add animation on scroll (using new class)
-    function animateOnScroll() {
-        const elements = document.querySelectorAll('.product-highlights, .audiobook-section, .video-section, .testimonials, .pricing, .upsell, .faq, .final-cta, .contact-form-section'); 
-        
-        // Add fade-slide-up class initially to hide elements
-        elements.forEach(el => {
-            if (el) { // Check if element exists before adding class
-                 el.classList.add('fade-slide-up');
-            }
+    // Add fade-in animation on scroll
+    function setupScrollAnimations() {
+        // Select all elements you want to fade in
+        const elementsToAnimate = document.querySelectorAll('.hero-content, .hero-image, .feature-card, .step-card, .stat-item, .testimonial-card, .offer-box, .service-card, .faq-item, .final-cta > .container > *:not(.cta-button), .contact-form'); // Add more selectors as needed
+
+        // Add the initial fade-in class to hide them
+        elementsToAnimate.forEach(el => {
+            el.classList.add('fade-in');
         });
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate'); // Add 'animate' to trigger transition
-                    // Optional: Stop observing once animated
-                    // observer.unobserve(entry.target); 
+                    // Add the 'visible' class to trigger the animation
+                    entry.target.classList.add('visible');
+                    // Optional: Stop observing the element once it's visible
+                    observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15 }); // Slightly higher threshold
-        
-        elements.forEach(element => {
-             if (element) { // Check if element exists before observing
-                observer.observe(element);
-             }
+        }, {
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+
+        // Observe each element
+        elementsToAnimate.forEach(element => {
+            observer.observe(element);
         });
     }
-    
-    animateOnScroll();
+
+    setupScrollAnimations(); // Call the animation setup function
 
     // --- Contact Form Submission Handler ---
     const contactForm = document.getElementById('contact-form');

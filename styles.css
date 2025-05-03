@@ -1294,6 +1294,93 @@ footer {
     }
 }
 
+/* --- Animations & Effects --- */
+
+/* General Fade-in Animation (Apply class 'fade-in' to elements) */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Add this class via JS when element is in view or on load */
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Button Hover Effects (Already partially implemented, enhance slightly) */
+.btn {
+    /* Existing styles */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle initial shadow */
+}
+
+.btn:hover {
+    /* Existing styles */
+    transform: translateY(-3px) scale(1.03); /* Slightly more lift */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2); /* Enhanced shadow on hover */
+}
+
+/* Card Hover Effects (Apply to .feature-card, .testimonial-card, .service-card, .step-card, .pricing-card) */
+.feature-card, .testimonial-card, .service-card, .step-card, .pricing-card {
+    /* Existing styles */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover, .testimonial-card:hover, .service-card:hover, .step-card:hover, .pricing-card:hover {
+    /* Existing styles */
+    transform: translateY(-6px); /* More noticeable lift */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Softer, larger shadow */
+    border-color: var(--primary-color); /* Highlight border on hover */
+}
+
+/* Specific hover for featured pricing card */
+.pricing-card.featured:hover {
+    transform: scale(1.03) translateY(-6px); /* Keep scale, add lift */
+    box-shadow: 0 12px 24px rgba(106, 77, 255, 0.2); /* Primary color shadow */
+}
+
+/* Hero Image Subtle Animation */
+.hero-image img {
+    /* Existing styles */
+    transition: transform 0.4s ease-out;
+}
+
+.hero-image:hover img {
+    transform: scale(1.02); /* Slight zoom on hover */
+}
+
+/* Download Button Specific Animation */
+.cta-button a.btn-secondary {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button a.btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.cta-button a.btn-secondary:hover::before {
+    left: 100%;
+}
+
+.cta-button a.btn-secondary i {
+    transition: transform 0.3s ease;
+    display: inline-block; /* Needed for transform */
+}
+
+.cta-button a.btn-secondary:hover i {
+    transform: scale(1.1) rotate(5deg); /* Slight scale and rotate */
+}
+
 @media (max-width: 768px) {
     header .container {
         flex-direction: row; /* Keep logo and button on same line */
