@@ -811,6 +811,40 @@ footer {
     border-top: 1px solid var(--border-color); /* Use border color */
 }
 
+/* Discord Widget Section Styles */
+.discord-widget-section {
+    background-color: var(--secondary-color); /* Match surrounding sections */
+    padding: 60px 0; /* Slightly less padding than main sections */
+}
+
+.discord-widget-section .section-header h2 span {
+    color: var(--accent-color); /* Use accent color */
+}
+
+.discord-widget-container {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    margin-top: 30px; /* Space below header */
+}
+
+.discord-widget-container iframe {
+    border-radius: 8px; /* Match other elements */
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color); /* Subtle border */
+    max-width: 100%; /* Ensure responsiveness */
+    /* Apply fade-in animation */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s 0.2s ease-out, transform 0.6s 0.2s ease-out; /* Add delay */
+}
+
+/* Trigger animation (can be done via JS or simply always visible) */
+.discord-widget-container iframe.visible { /* Updated selector */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 .footer-bottom p {
     font-size: 0.9rem;
     opacity: 0.7; /* Keep opacity */

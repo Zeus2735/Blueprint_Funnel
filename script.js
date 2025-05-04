@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 answer.style.display = 'none';
                 icon.className = 'fas fa-plus';
             }
-        });
-    });
+        }); // End of question.addEventListener
+    }); // End of faqItems.forEach
     
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -45,10 +45,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     top: targetElement.offsetTop - 80, // Adjust for header height
                     behavior: 'smooth'
                 });
-              } // <-- Added missing closing brace for if(targetElement)
-            } // <-- Added missing closing brace for if(targetId...)
-        });
-    });
+              } // End of if(targetElement)
+            } // End of if(targetId...)
+        }); // End of anchor.addEventListener
+    }); // End of document.querySelectorAll('a[href^="#"]').forEach
     
     // Countdown Timer
     function startCountdown() {
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initial copies left (random between 40-50 for urgency)
         const initialCopies = Math.floor(Math.random() * 11) + 40;
-        copiesLeft.textContent = initialCopies;
-        copiesLeftReminder.textContent = initialCopies;
+        if (copiesLeft) copiesLeft.textContent = initialCopies;
+        if (copiesLeftReminder) copiesLeftReminder.textContent = initialCopies;
         
         // Update the countdown every second
         const timerInterval = setInterval(function() {
@@ -79,31 +79,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
             // Display the result
-            countdownTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (countdownTimer) {
+                countdownTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
             
             // If the countdown is finished, clear the interval
             if (distance < 0) {
                 clearInterval(timerInterval);
-                countdownTimer.textContent = "EXPIRED";
+                if (countdownTimer) countdownTimer.textContent = "EXPIRED";
             }
         }, 1000);
         
         // Randomly decrease available copies (for urgency)
         setInterval(function() {
-            if (parseInt(copiesLeft.textContent) > 1) {
+            if (copiesLeft && parseInt(copiesLeft.textContent) > 1) {
                 // 10% chance to decrease by 1
                 if (Math.random() < 0.1) {
                     const newCopies = parseInt(copiesLeft.textContent) - 1;
                     copiesLeft.textContent = newCopies;
-                    copiesLeftReminder.textContent = newCopies;
+                    if (copiesLeftReminder) copiesLeftReminder.textContent = newCopies;
                 }
             }
         }, 30000); // Check every 30 seconds
     }
     
     startCountdown();
-    
-    // Video placeholder logic removed as video is now directly embedded in HTML
     
     // Mobile menu toggle (for smaller screens)
     function setupMobileMenu() {
@@ -117,19 +117,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Append to the header's container instead of inserting before nav
         const headerContainer = header.querySelector('.container');
-        if (headerContainer) {
+        if (headerContainer && nav) { // Check if nav exists too
              headerContainer.appendChild(mobileMenuBtn); // Append button inside the container
+             
+             // Add click event only if button and nav exist
+             mobileMenuBtn.addEventListener('click', function() {
+                 nav.classList.toggle('active');
+                 this.innerHTML = nav.classList.contains('active') ? 
+                     '<i class="fas fa-times"></i>' : 
+                     '<i class="fas fa-bars"></i>';
+             });
         } else {
-             console.error("Header container not found for mobile menu button.");
+             console.error("Header container or nav not found for mobile menu button setup.");
         }
-
-        // Add click event
-        mobileMenuBtn.addEventListener('click', function() {
-            nav.classList.toggle('active');
-            this.innerHTML = nav.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : 
-                '<i class="fas fa-bars"></i>';
-        });
     }
     
     // Only setup mobile menu if screen width is below 768px
@@ -185,16 +185,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Clear previous status messages
-            formStatus.textContent = '';
-            formStatus.className = 'form-status'; // Reset classes
+            if (formStatus) {
+                formStatus.textContent = '';
+                formStatus.className = 'form-status'; // Reset classes
+            }
 
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData.entries());
 
             // Basic frontend validation (optional, server validates too)
             if (!data.name || !data.email || !data.message) {
-                formStatus.textContent = 'Please fill in all fields.';
-                formStatus.classList.add('error');
+                if (formStatus) {
+                    formStatus.textContent = 'Please fill in all fields.';
+                    formStatus.classList.add('error');
+                }
+                 if (submitButton) { // Re-enable button
+                     submitButton.disabled = false;
+                     submitButton.textContent = 'Send Message';
+                 }
                 return;
             }
 
@@ -210,16 +218,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (result.success) {
-                    formStatus.textContent = result.message || 'Message sent successfully!';
-                    formStatus.classList.add('success');
+                    if (formStatus) {
+                        formStatus.textContent = result.message || 'Message sent successfully!';
+                        formStatus.classList.add('success');
+                    }
                     contactForm.reset(); // Clear the form fields
-                    if (submitButton) { // Reset button on success (optional, form clears anyway)
+                    if (submitButton) { // Reset button on success
                          submitButton.disabled = false;
                          submitButton.textContent = 'Send Message';
                     }
                 } else {
-                    formStatus.textContent = result.message || 'An error occurred. Please try again.';
-                    formStatus.classList.add('error');
+                    if (formStatus) {
+                        formStatus.textContent = result.message || 'An error occurred. Please try again.';
+                        formStatus.classList.add('error');
+                    }
                      if (submitButton) { // Re-enable button on error
                          submitButton.disabled = false;
                          submitButton.textContent = 'Send Message';
@@ -227,8 +239,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error('Error submitting contact form:', error);
-                formStatus.textContent = 'An error occurred. Please check your connection and try again.';
-                formStatus.classList.add('error');
+                if (formStatus) {
+                    formStatus.textContent = 'An error occurred. Please check your connection and try again.';
+                    formStatus.classList.add('error');
+                }
                  if (submitButton) { // Re-enable button on fetch error
                      submitButton.disabled = false;
                      submitButton.textContent = 'Send Message';
@@ -244,7 +258,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!stripePublicKey || !stripePublicKey.startsWith('pk_live')) { 
         console.error('Stripe LIVE Public Key is missing or invalid in script.js');
     } else {
-        stripe = Stripe(stripePublicKey); // Initialize Stripe.js here
+        try {
+            stripe = Stripe(stripePublicKey); // Initialize Stripe.js here
+        } catch (e) {
+            console.error("Error initializing Stripe:", e);
+        }
     }
 
     // --- Lead Capture Modal Logic ---
@@ -271,21 +289,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 modalFormStatus.className = 'form-status';
             }
             // Wait for transition before hiding
-            setTimeout(() => modalOverlay.style.display = 'none'), 300; 
+            setTimeout(() => {
+                if (modalOverlay) modalOverlay.style.display = 'none';
+            }, 300); 
         }
     }
 
     // Modify the original checkout button's listener to OPEN the modal
     if (originalCheckoutButton) {
-         // --- MODIFIED: Original Checkout Button Listener ---
-         // This button NOW ONLY OPENS the modal
          originalCheckoutButton.addEventListener('click', function(e) {
              e.preventDefault(); // Prevent default link behavior (scrolling to #)
              console.log('Original checkout button clicked - opening modal.');
              openModal(); // Call function to show the modal
          });
-         // --- End of MODIFIED Listener ---
-         
     } else {
          console.error("Original checkout button (#checkout-button) not found.");
     }
@@ -397,5 +413,14 @@ document.addEventListener('DOMContentLoaded', function() {
              }
          });
      }
-
-});
+ 
+     // Trigger Discord iframe animation on load (Placed correctly before the final '});')
+     const discordIframe = document.querySelector('.discord-widget-container iframe'); // Updated selector
+     if (discordIframe) {
+         // Add a small delay to ensure CSS is applied and iframe has loaded
+         setTimeout(() => {
+             discordIframe.classList.add('visible');
+         }, 500); // Increased delay slightly
+     }
+ 
+ }); // End of DOMContentLoaded listener
