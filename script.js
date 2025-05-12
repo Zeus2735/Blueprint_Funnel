@@ -422,5 +422,111 @@ document.addEventListener('DOMContentLoaded', function() {
              discordIframe.classList.add('visible');
          }, 500); // Increased delay slightly
      }
+
+    // --- Free Checklist Modal Logic ---
+    const checklistModalOverlay = document.getElementById('free-checklist-modal');
+    const openChecklistModalBtn = document.getElementById('open-checklist-modal-btn');
+    const checklistForm = document.getElementById('free-checklist-form');
+    const checklistFormStatus = document.getElementById('checklist-form-status');
+
+    function openChecklistModal() {
+        if (checklistModalOverlay) {
+            checklistModalOverlay.style.display = 'flex';
+            setTimeout(() => checklistModalOverlay.classList.add('active'), 10);
+        }
+    }
+
+    window.closeChecklistModal = function() { // Make global for inline onclick
+        if (checklistModalOverlay) {
+            checklistModalOverlay.classList.remove('active');
+            if(checklistFormStatus) { // Clear status on close
+                checklistFormStatus.textContent = '';
+                checklistFormStatus.className = 'form-status';
+            }
+            setTimeout(() => {
+                if (checklistModalOverlay) checklistModalOverlay.style.display = 'none';
+            }, 300); // Match CSS transition
+        }
+    }
+
+    if (openChecklistModalBtn) {
+        openChecklistModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openChecklistModal();
+        });
+    }
+
+    if (checklistModalOverlay) { // Close by clicking outside
+        checklistModalOverlay.addEventListener('click', function(e) {
+            if (e.target === checklistModalOverlay) {
+                closeChecklistModal();
+            }
+        });
+    }
+
+    if (checklistForm) {
+        const checklistSubmitButton = checklistForm.querySelector('button[type="submit"]');
+
+        checklistForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (checklistSubmitButton) {
+                checklistSubmitButton.disabled = true;
+                checklistSubmitButton.textContent = 'Sending...';
+            }
+            if (checklistFormStatus) {
+                checklistFormStatus.textContent = '';
+                checklistFormStatus.className = 'form-status';
+            }
+
+            const formData = new FormData(checklistForm);
+            const data = Object.fromEntries(formData.entries());
+
+            if (!data.name || !data.email) {
+                if (checklistFormStatus) {
+                    checklistFormStatus.textContent = 'Please fill in all fields.';
+                    checklistFormStatus.classList.add('error');
+                }
+                if (checklistSubmitButton) {
+                    checklistSubmitButton.disabled = false;
+                    checklistSubmitButton.textContent = 'Download Now';
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch('/.netlify/functions/send-checklist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    if (checklistFormStatus) {
+                        checklistFormStatus.textContent = result.message || 'Checklist sent! Please check your email.';
+                        checklistFormStatus.classList.add('success');
+                    }
+                    checklistForm.reset();
+                    setTimeout(closeChecklistModal, 3000); // Close modal after 3 seconds on success
+                } else {
+                    if (checklistFormStatus) {
+                        checklistFormStatus.textContent = result.message || 'An error occurred. Please try again.';
+                        checklistFormStatus.classList.add('error');
+                    }
+                }
+            } catch (error) {
+                console.error('Error submitting checklist form:', error);
+                if (checklistFormStatus) {
+                    checklistFormStatus.textContent = 'An error occurred. Please check your connection and try again.';
+                    checklistFormStatus.classList.add('error');
+                }
+            } finally {
+                if (checklistSubmitButton) {
+                    checklistSubmitButton.disabled = false;
+                    checklistSubmitButton.textContent = 'Download Now';
+                }
+            }
+        });
+    }
  
  }); // End of DOMContentLoaded listener
